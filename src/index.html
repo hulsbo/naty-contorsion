@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Naty Contorsion Official Website</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Satisfy&display=swap"
+		rel="stylesheet">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Kite+One&family=Satisfy&display=swap" rel="stylesheet">
+		<link href="./output.css" rel="stylesheet">
+	<style>
+		:root {
+			--main-color: #C8A2C8;
+			--accent-color: #000000;
+			--text-color-header: #f2a9ee;
+			--text-color: #000000;
+		}
+
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: "Kite One", sans-serif;
+			font-weight: 400;
+			font-style: normal;
+			background: linear-gradient(135deg, var(--main-color), #E6E6FA);
+			color: var(--text-color);
+		}
+
+		header {
+			font-family: "Satisfy", cursive;
+			background-color: var(--accent-color);
+			padding: 1em;
+			text-align: right;
+			color: var(--text-color-header);
+			box-shadow:  4px 15px rgba(0, 0, 0, 0.1);
+			height: 20vh;
+			overflow: auto;
+		}
+
+		h1 {
+			font-size: 3.5rem;
+			margin: 0;
+			text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+		}
+
+		.gallery {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+			gap: 2rem;
+			padding: 2rem;
+		}
+
+		.gallery-item {
+			position: relative;
+			overflow: hidden;
+			border-radius: 15px;
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+			transition: transform 0.3s ease;
+		}
+
+		.gallery-item:hover {
+			transform: scale(1.05);
+		}
+
+		.gallery-item img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+		.bio {
+			max-width: 800px;
+			margin: 2rem auto;
+			padding: 2rem;
+			background-color: rgba(255, 255, 255, 0.9);
+			border-radius: 15px;
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+		}
+
+		.container-performances {
+			text-align: center;
+			padding: 1rem;
+		}
+
+		@keyframes glow {
+			from {
+				color: var(--text-color);
+			}
+
+			to {
+				color: var(--accent-color);
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<header class="flex justify-between align-middle">
+		<image src="../images/pose.png" style="height: 110%;"/>
+		<div>
+			<h1>Naty Contorsion</h1>
+			<p>Mexican contortionist with aerial dance skills and pointe shoes.</p>
+		</div>
+	</header>
+	<nav class="flex justify-evenly py-5 text-2xl">
+		<a class="mx-10 hover:text-slate-200" href="index.html"><h2>HOME</h2></a>
+		<a href="about.html"><h2>ABOUT</h2></a>
+		<a href="bookings.html"><h2>BOOKINGS</h2></a>
+	</nav>
+	<div class="container-performances">
+		<h1 class="text-3xl font-bold">SHOWS</h1>
+		<div class="gallery">
+			<div class="gallery-item">
+				<video width="500" height="auto-fit" loop muted preload="auto" 
+				onmouseover="this.play()"
+				onmouseout="this.pause()">
+					<source controls src="../videos/Solo Contortion [vCF_PnwxJyk].mp4" type="video/mp4">
+					Your browser does not support the video tag.
+				</video>
+			</div>
+			<div class="gallery-item">
+				<video width="500" height="300" loop muted preload="auto" 
+				onmouseover="this.play()"
+				onmouseout="this.pause()">
+					<source src="../videos/Contorsión Pool party ✨ [F_fsHCYyNxg].mp4" type="video/mp4">
+					Your browser does not support the video tag.
+				</video>
+			</div>
+			<div class="gallery-item">
+				<video width="auto-fit" height="auto-fit" loop muted preload="auto" 
+				onmouseover="this.play()"
+				onmouseout="this.pause()">
+					<source src="../videos/Ballet performance [Vm91hWShZCU].mp4" type="video/mp4">
+					Your browser does not support the video tag.
+				</video>
+			</div>
+			<div class="gallery-item">
+				<video width="500" height="300" loop muted preload="auto"
+				onmouseover="this.play()"
+				onmouseout="this.pause()">
+					<source src="../videos/Solo Contortion [vCF_PnwxJyk].mkv" height="250" type="video/mp4">
+					Your browser does not support the video tag.
+				</video>
+			</div>
+		</div>
+	</div>
+
+</body>
+</head>
+
+</html>
