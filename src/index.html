@@ -2,156 +2,198 @@
 <html>
 
 <head>
-	<title>Naty Contorsion Official Website</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Video Columns</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link
-		href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Satisfy&display=swap"
+		href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Kite+One&family=Satisfy&display=swap"
 		rel="stylesheet">
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Kite+One&family=Satisfy&display=swap" rel="stylesheet">
-		<link href="./output.css" rel="stylesheet">
 	<style>
-		:root {
-			--main-color: #C8A2C8;
-			--accent-color: #000000;
-			--text-color-header: #f2a9ee;
-			--text-color: #000000;
+		.column-transition {
+			transition: all 0.5s ease-in-out;
+			width: calc(33.333% - 1rem);
 		}
 
-		body {
-			margin: 0;
+		.column-expanded {
+			width: 100%;
+		}
+
+		.column-collapsed {
+			width: 0;
 			padding: 0;
-			font-family: "Kite One", sans-serif;
-			font-weight: 400;
-			font-style: normal;
-			background: linear-gradient(135deg, var(--main-color), #E6E6FA);
-			color: var(--text-color);
-		}
-
-		header {
-			font-family: "Satisfy", cursive;
-			background-color: var(--accent-color);
-			padding: 1em;
-			text-align: right;
-			color: var(--text-color-header);
-			box-shadow:  4px 15px rgba(0, 0, 0, 0.1);
-			height: 20vh;
-			overflow: auto;
-		}
-
-		h1 {
-			font-size: 3.5rem;
 			margin: 0;
-			text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+			opacity: 0;
 		}
 
-		.gallery {
-			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-			gap: 2rem;
-			padding: 2rem;
-		}
-
-		.gallery-item {
-			position: relative;
-			overflow: hidden;
-			border-radius: 15px;
-			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-			transition: transform 0.3s ease;
-		}
-
-		.gallery-item:hover {
-			transform: scale(1.05);
-		}
-
-		.gallery-item img {
+		.preview-video {
 			width: 100%;
 			height: 100%;
 			object-fit: cover;
 		}
 
-		.bio {
-			max-width: 800px;
-			margin: 2rem auto;
-			padding: 2rem;
-			background-color: rgba(255, 255, 255, 0.9);
-			border-radius: 15px;
-			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+		.expanded-video {
+			width: 100vw;
+			height: 100vh;
+			object-fit: cover;
+			position: sticky;
+			top: 0;
+			left: 0;
 		}
 
-		.container-performances {
-			text-align: center;
+		.content-scroll {
+			min-height: 150vh;
+		}
+
+		.content-overlay {
+			background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7) 70%);
+		}
+
+		.floating-title {
+			position: absolute;
+			bottom: 2rem;
+			left: 2rem;
+			right: 2rem;
 			padding: 1rem;
+			background: rgba(0, 0, 0, 0.7);
+			border-radius: 0.5rem;
+			backdrop-filter: blur(4px);
+			transform: translateY(0);
+			transition: all 0.3s ease;
 		}
 
-		@keyframes glow {
-			from {
-				color: var(--text-color);
-			}
-
-			to {
-				color: var(--accent-color);
-			}
+		.satisfy-regular {
+			font-family: "Satisfy", serif;
+			font-weight: 400;
+			font-style: normal;
 		}
 	</style>
 </head>
 
-<body>
-	<header class="flex justify-between align-middle">
-		<image src="../images/pose.png" style="height: 110%;"/>
-		<div>
-			<h1>Naty Contorsion</h1>
-			<p>Mexican contortionist with aerial dance skills and pointe shoes.</p>
+<body class="bg-gray-50 p-0 m-0 text-center">
+	<div x-data="{ 
+    expanded: null,
+    activeVideo: null,
+    columns: [
+	{
+        id: 1,
+        title: 'Ballet Performances',
+        video: '../videos/Ballet_performance_trimmed.mp4',
+        subtitle: 'Elegance meets Aesthetics',
+		briefDescription: `Elegance and strength intertwine in a ballet performance that showcases grace, precision, and timeless beauty.`,
+		content: `This ballet-inspired performance captures the essence of classical dance, merging it with the breathtaking art of contortion. Each movement embodies poise and control, elevating the art form to new heights and inviting audiences to experience the beauty and strength ballet represents.`,
+		longContent: `Ballet is known for its unmatched elegance, precision, and expressive power, and this performance brings those qualities to life through the skillful use of contortion. Set to enchanting music, each move is meticulously crafted to reflect the beauty of classical dance, transforming traditional ballet techniques into an awe-inspiring display of flexibility and artistry. The performance transcends time, blending classical inspiration with modern expression in a way that captivates the audience, leaving them with a lasting impression of grace, balance, and emotional depth.`	
+	},
+      {
+        id: 2,
+        title: 'Party Shows',
+        video: '../videos/pool_party_trimmed.mp4',
+        subtitle: 'Party Performances',
+        briefDescription: 'Elevate your event with unforgettable, vibrant experiences that leave a lasting impression.',
+        content: 'Bring an electric energy to your event with a contortionist performance designed to captivate and engage. This show combines daring moves with an urban aesthetic, tailored to fit the lively spirit of any celebration. From private parties to grand galas, this performance enhances the atmosphere with dynamic routines that excite and inspire, making your event unforgettable.',
+        longContent: `Each show is crafted to match the pulse of your event, blending flexibility and daring feats with a modern edge. The contortionist’s charisma and charm, paired with striking visuals and high-energy moves, make this the perfect addition to any party setting. Designed to engage and astonish, the performance invites your guests into a world of boundless possibility, ensuring they leave with memories that last a lifetime.
+
+		`
+      },
+	  {
+		id: 3,
+		title: `Traditional Circus`,
+		video: '../videos/Solo_Contorsion_trimmed.mp4',
+		subtitle: 'A Marvel of Timeless Entertainment',
+		briefDescription: 'Experience the thrill and artistry of a traditional circus performance like never before.',
+		content: 'Step into the enchanting world of the traditional circus, where contortion meets classic circus acts in a celebration of skill, strength, and artistry. This performance blends age-old circus magic with the awe-inspiring feats of a contortionist, captivating audiences with each graceful, daring move.',
+		longContent: `A traditional circus show offers more than just entertainment—it’s an unforgettable journey back to a timeless art form that has thrilled generations. From the elegance of contortion acts to heart-pounding feats that defy the limits of human ability, this show has something for everyone. Witness the balance of athleticism and artistry as each performance piece is carefully crafted to amaze and inspire, leaving audiences in awe of the performer’s incredible skill and dedication. This show is a true marvel, combining the best of traditional circus with the unique beauty of modern contortion, making it an absolute must-see experience.`
+	  }
+    ],
+    handleHover(videoElement, play) {
+      if (this.expanded !== null) return;
+      
+      if (play) {
+        videoElement.play().catch(() => {});
+      } else {
+        videoElement.pause();
+        videoElement.currentTime = 0;
+      }
+    },
+    expandColumn(column) {
+      if (this.expanded === null) {
+        this.expanded = column.id;
+        // Get both preview and expanded video elements
+        const previewVideo = document.querySelector(`#preview-${column.id}`);
+        const expandedVideo = document.querySelector(`#expanded-${column.id}`);
+        
+        // Set expanded video to same time as preview
+        expandedVideo.currentTime = previewVideo.currentTime;
+        expandedVideo.play().catch(() => {});
+      }
+    }
+  }" @keydown.escape="expanded = null">
+		<h1 class="font-light text-5xl text-slate-800"><span class="satisfy-regular">Naty Contorsion</span></h1>
+		<h2 class="font-light text-3xl text-slate-400 my-4">Available Shows Today</h2>
+		<div class="flex gap-4 h-screen" x-show="expanded === null">
+			<template x-for="column in columns" :key="column.id">
+				<div :class="{
+            'column-transition overflow-hidden': true,
+            'cursor-pointer': expanded === null
+          }" @click="expandColumn(column)">
+					<!-- Collapsed State -->
+					<div x-show="expanded === null" class="h-full bg-black overflow-hidden relative">
+						<video :id="'preview-' + column.id" :src="column.video" class="preview-video" loop muted
+							@mouseenter="handleHover($event.target, true)"
+							@mouseleave="handleHover($event.target, false)"></video>
+
+						<!-- Floating Title -->
+						<div class="floating-title" x-show="expanded === null"
+							x-transition:leave="transition ease-out duration-300"
+							x-transition:leave-start="opacity-100 transform translate-y-0"
+							x-transition:leave-end="opacity-0 transform translate-y-4">
+							<h3 class="text-white text-xl font-bold mb-2" x-text="column.title"></h3>
+							<p class="text-white text-sm" x-text="column.briefDescription"></p>
+						</div>
+
+					</div>
+				</div>
+			</template>
 		</div>
-	</header>
-	<nav class="flex justify-evenly py-5 text-2xl">
-		<a class="mx-10 hover:text-slate-200" href="index.html"><h2>HOME</h2></a>
-		<a href="about.html"><h2>ABOUT</h2></a>
-		<a href="bookings.html"><h2>BOOKINGS</h2></a>
-	</nav>
-	<div class="container-performances">
-		<h1 class="text-3xl font-bold">SHOWS</h1>
-		<div class="gallery">
-			<div class="gallery-item">
-				<video width="500" height="auto-fit" loop muted preload="auto" 
-				onmouseover="this.play()"
-				onmouseout="this.pause()">
-					<source controls src="../videos/Solo Contortion [vCF_PnwxJyk].mp4" type="video/mp4">
-					Your browser does not support the video tag.
-				</video>
+
+		<!-- Expanded State -->
+		<template x-for="column in columns" :key="column.id">
+			<div x-show="expanded === column.id" class="relative w-screen min-h-screen bg-black" x-cloak>
+				<!-- Back Button -->
+				<button @click.stop="expanded = null"
+					class="fixed top-4 right-4 bg-gray-200 hover:bg-gray-300 rounded-full p-2 z-50">
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+						stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+							d="M6 18L18 6M6 6l12 12" />
+					</svg>
+				</button>
+
+				<!-- Video -->
+				<video :id="'expanded-' + column.id" :src="column.video" class="expanded-video" loop></video>
+
+				<!-- Scrollable Content -->
+				<div class="content-scroll relative">
+					<!-- Spacer to position content below video -->
+					<div class="h-screen"></div>
+
+					<!-- Content that appears on scroll -->
+					<div class="relative z-10 px-8 py-16 content-overlay">
+						<div class="max-w-4xl mx-auto text-white">
+							<h1 class="text-5xl font-bold mb-4" x-text="column.title"></h1>
+							<h2 class="text-3xl font-light mb-8" x-text="column.subtitle"></h2>
+							<p class="text-xl mb-8" x-text="column.content"></p>
+							<div class="prose prose-xl prose-invert" x-html="column.longContent"></div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="gallery-item">
-				<video width="500" height="300" loop muted preload="auto" 
-				onmouseover="this.play()"
-				onmouseout="this.pause()">
-					<source src="../videos/Contorsión Pool party ✨ [F_fsHCYyNxg].mp4" type="video/mp4">
-					Your browser does not support the video tag.
-				</video>
-			</div>
-			<div class="gallery-item">
-				<video width="auto-fit" height="auto-fit" loop muted preload="auto" 
-				onmouseover="this.play()"
-				onmouseout="this.pause()">
-					<source src="../videos/Ballet performance [Vm91hWShZCU].mp4" type="video/mp4">
-					Your browser does not support the video tag.
-				</video>
-			</div>
-			<div class="gallery-item">
-				<video width="500" height="300" loop muted preload="auto"
-				onmouseover="this.play()"
-				onmouseout="this.pause()">
-					<source src="../videos/Solo Contortion [vCF_PnwxJyk].mkv" height="250" type="video/mp4">
-					Your browser does not support the video tag.
-				</video>
-			</div>
-		</div>
+		</template>
 	</div>
 
+	<!-- Add Tailwind CSS -->
+	<script src="https://cdn.tailwindcss.com"></script>
+	<!-- Add Alpine.js with defer -->
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.5/cdn.min.js"></script>
 </body>
-</head>
 
 </html>

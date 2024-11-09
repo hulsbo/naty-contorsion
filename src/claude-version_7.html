@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Columns</title>
+    <style>
+        .column-transition {
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            width: calc(33.333% - 1rem);
+            position: relative;
+        }
+        
+        .column-expanded {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 50;
+        }
+        
+        .column-collapsed {
+            width: 0;
+            padding: 0;
+            margin: 0;
+            opacity: 0;
+        }
+
+        .preview-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .expanded-video {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            position: sticky;
+            top: 0;
+            left: 0;
+        }
+
+        .content-scroll {
+            min-height: 150vh;
+            opacity: 0;
+            transition: opacity 0.3s ease-in;
+        }
+
+        .content-visible {
+            opacity: 1;
+        }
+
+        .content-overlay {
+            background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7) 70%);
+        }
+
+        .floating-title {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            right: 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 0.5rem;
+            backdrop-filter: blur(4px);
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+
+        .video-container {
+            position: relative;
+            height: 100%;
+            transform-origin: center;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .video-container.expanded {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 50;
+        }
+    </style>
+</head>
+<body class="bg-black p-0 m-0">
+  <div x-data="{ 
+    expanded: null,
+    transitioning: false,
+    columns: [
+      {
+        id: 1,
+        title: 'Video 1',
+        video: '../videos/Ballet_performance_trimmed.mp4',
+        subtitle: 'A Journey Through Time',
+        briefDescription: 'Explore the mesmerizing landscapes of ancient civilizations',
+        content: 'This is the detailed content for video 1. You can add more text here to describe the video content and provide additional context.',
+        longContent: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`
+      },
+      {
+        id: 2,
+        title: 'Video 2',
+        video: '../videos/pool_party_trimmed.mp4',
+        subtitle: 'Urban Exploration',
+        briefDescription: 'Discover hidden gems in the heart of the city',
+        content: 'This is the detailed content for video 2. Each video can have its own unique description and additional information.',
+        longContent: `Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.`
+      },
+      {
+        id: 3,
+        title: 'Video 3',
+        video: '../videos/Solo_Contorsion_trimmed.mp4',
+        subtitle: 'Nature\'s Beauty',
+        briefDescription: 'Witness the raw power and beauty of natural wonders',
+        content: 'This is the detailed content for video 3. The layout is responsive and works well on different screen sizes.',
+        longContent: `At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.`
+      }
+    ],
+    handleHover(videoElement, play) {
+      if (this.expanded !== null) return;
+      
+      if (play) {
+        videoElement.play().catch(() => {});
+      } else {
+        videoElement.pause();
+        videoElement.currentTime = 0;
+      }
+    },
+    async expandColumn(column) {
+      if (this.expanded === null && !this.transitioning) {
+        this.transitioning = true;
+        const container = document.querySelector(`#container-${column.id}`);
+        const video = document.querySelector(`#video-${column.id}`);
+        const content = document.querySelector(`#content-${column.id}`);
+        
+        // Start expansion
+        container.classList.add('expanded');
+        
+        // Wait for expansion animation
+        await new Promise(resolve => setTimeout(resolve, 800));
+        
+        this.expanded = column.id;
+        this.transitioning = false;
+        
+        // Fade in content
+        setTimeout(() => {
+          content.classList.add('content-visible');
+        }, 100);
+      }
+    },
+    async closeExpanded() {
+      if (this.expanded !== null && !this.transitioning) {
+        this.transitioning = true;
+        const container = document.querySelector(`#container-${this.expanded}`);
+        const content = document.querySelector(`#content-${this.expanded}`);
+        
+        // Hide content first
+        content.classList.remove('content-visible');
+        
+        // Wait for content to fade out
+        await new Promise(resolve => setTimeout(resolve, 300));
+        
+        // Remove expanded class
+        container.classList.remove('expanded');
+        
+        // Wait for collapse animation
+        await new Promise(resolve => setTimeout(resolve, 800));
+        
+        this.expanded = null;
+        this.transitioning = false;
+      }
+    }
+  }"
+  @keydown.escape="closeExpanded()">
+    <div class="flex gap-4 h-screen relative">
+      <template x-for="column in columns" :key="column.id">
+        <div
+          :class="{
+            'column-transition overflow-hidden': true,
+            'cursor-pointer': expanded === null
+          }"
+          @click="expandColumn(column)"
+        >
+          <!-- Video Container -->
+          <div 
+            :id="'container-' + column.id"
+            class="video-container"
+          >
+            <video 
+              :id="'video-' + column.id"
+              :src="column.video"
+              class="preview-video"
+              loop
+              muted
+              @mouseenter="handleHover($event.target, true)"
+              @mouseleave="handleHover($event.target, false)"
+            ></video>
+
+            <!-- Floating Title -->
+            <div 
+              class="floating-title"
+              x-show="expanded === null"
+              x-transition:leave="transition ease-out duration-300"
+              x-transition:leave-start="opacity-100 transform translate-y-0"
+              x-transition:leave-end="opacity-0 transform translate-y-4"
+            >
+              <h3 class="text-white text-xl font-bold mb-2" x-text="column.title"></h3>
+              <p class="text-white text-sm" x-text="column.briefDescription"></p>
+            </div>
+
+            <!-- Back Button -->
+            <button
+              x-show="expanded === column.id"
+              @click.stop="closeExpanded()"
+              class="fixed top-4 right-4 bg-gray-200 hover:bg-gray-300 rounded-full p-2 z-50"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            <!-- Scrollable Content -->
+            <div 
+              :id="'content-' + column.id"
+              class="content-scroll"
+              x-show="expanded === column.id"
+            >
+              <!-- Spacer to position content below video -->
+              <div class="h-screen"></div>
+              
+              <!-- Content that appears on scroll -->
+              <div class="relative z-10 px-8 py-16 content-overlay">
+                <div class="max-w-4xl mx-auto text-white">
+                  <h1 class="text-5xl font-bold mb-4" x-text="column.title"></h1>
+                  <h2 class="text-3xl font-light mb-8" x-text="column.subtitle"></h2>
+                  <p class="text-xl mb-8" x-text="column.content"></p>
+                  <div class="prose prose-xl prose-invert" x-html="column.longContent"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- Add Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Add Alpine.js with defer -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.5/cdn.min.js"></script>
+</body>
+</html>
