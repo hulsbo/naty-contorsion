@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Columns</title>
+    <style>
+        .column-transition {
+            transition: all 0.5s ease-in-out;
+            width: calc(33.333% - 1rem);
+        }
+        
+        .column-expanded {
+            width: 100%;
+        }
+        
+        .column-collapsed {
+            width: 0;
+            padding: 0;
+            margin: 0;
+            opacity: 0;
+        }
+
+        .preview-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .full-video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+  <div x-data="{ 
+    expanded: null,
+    columns: [
+      {
+        id: 1,
+        title: 'Video 1',
+        previewVideo: '../videos/Ballet_performance_trimmed.mp4',
+        fullVideo: 'https://example.com/full1.mp4',
+        content: 'This is the detailed content for video 1. You can add more text here to describe the video content and provide additional context.'
+      },
+      {
+        id: 2,
+        title: 'Video 2',
+        previewVideo: '../videos/pool_party_trimmed.mp4',
+        fullVideo: 'https://example.com/full2.mp4',
+        content: 'This is the detailed content for video 2. Each video can have its own unique description and additional information.'
+      },
+      {
+        id: 3,
+        title: 'Video 3',
+        previewVideo: '../videos/Solo_Contorsion_trimmed.mp4',
+        fullVideo: 'https://example.com/full3.mp4',
+        content: 'This is the detailed content for video 3. The layout is responsive and works well on different screen sizes.'
+      }
+    ],
+    handleHover(event, play) {
+      const video = event.target;
+      video.muted = true;
+      if (play) {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+        video.currentTime = 0;
+      }
+    }
+  }">
+  <h1 class="font-light text-3xl mb-6">Naty Contorsion - Show Reel Videos</h1>
+    <div class="flex gap-4 h-[600px]">
+      <template x-for="column in columns" :key="column.id">
+        <div
+          :class="{
+            'column-transition overflow-hidden': true,
+            'column-expanded': expanded === column.id,
+            'column-collapsed': expanded !== null && expanded !== column.id,
+            'cursor-pointer': expanded === null
+          }"
+          @click="expanded === null && (expanded = column.id)"
+        >
+          <!-- Collapsed State -->
+          <div 
+            x-show="expanded === null"
+            x-transition:enter="transition duration-500"
+            x-transition:leave="transition duration-500"
+            class="h-full bg-white rounded-lg shadow-md overflow-hidden relative"
+          >
+            <video 
+              :src="column.previewVideo"
+              class="preview-video"
+              loop
+              muted
+              @mouseenter="handleHover($event, true)"
+              @mouseleave="handleHover($event, false)"
+            ></video>
+          </div>
+
+          <!-- Expanded State -->
+          <div
+            x-show="expanded === column.id"
+            x-transition:enter="transition duration-500"
+            x-transition:leave="transition duration-500"
+            class="h-full bg-white rounded-lg shadow-md p-6 relative"
+          >
+            <!-- Back Button -->
+            <button
+              @click.stop="expanded = null"
+              class="absolute top-4 right-4 bg-gray-200 hover:bg-gray-300 rounded-full p-2 z-10"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            <!-- Expanded Content -->
+            <div class="flex h-full gap-6">
+              <div class="w-1/2">
+                <video 
+                  :src="column.fullVideo"
+                  class="full-video rounded-lg"
+                  controls
+                  autoplay
+                ></video>
+              </div>
+              <div class="w-1/2">
+                <h2 class="text-2xl font-bold mb-4" x-text="column.title"></h2>
+                <p class="text-gray-600" x-text="column.content"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- Add Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Add Alpine.js with defer -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.5/cdn.min.js"></script>
+</body>
+</html>
